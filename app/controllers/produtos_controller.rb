@@ -1,10 +1,11 @@
 class ProdutosController < ApplicationController
   before_action :set_produto, only: [:show, :edit, :update, :destroy]
+  before_action :load_fabricante, only: [:index, :show, :new, :create]
 
   # GET /produtos
   # GET /produtos.json
   def index
-    @produtos = Produto.all
+    @produtos = @fabricante.produtos.all
   end
 
   # GET /produtos/1
@@ -24,7 +25,7 @@ class ProdutosController < ApplicationController
   # POST /produtos
   # POST /produtos.json
   def create
-    @produto = Produto.new(produto_params)
+    @produto = @fabricante.produtos.create(produto_params)
 
     respond_to do |format|
       if @produto.save
@@ -62,6 +63,10 @@ class ProdutosController < ApplicationController
   end
 
   private
+    def load_fabricante
+      @fabricante = Fabricante.find(params[:fabricante_id])
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_produto
       @produto = Produto.find(params[:id])
@@ -69,6 +74,6 @@ class ProdutosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def produto_params
-      params.require(:produto).permit(:nome, :codigo)
+      params.require(:produto).permit(:nome, :codigo, :fabricante_id)
     end
 end

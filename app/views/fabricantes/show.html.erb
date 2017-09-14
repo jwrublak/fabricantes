@@ -10,5 +10,9 @@
   <%= @fabricante.codigo %>
 </p>
 
+<p>
+  <strong><%= link_to 'Produtos', fabricante_produtos_path(@fabricante) %></strong>
+</p>
+
 <%= link_to 'Edit', edit_fabricante_path(@fabricante) %> |
 <%= link_to 'Back', fabricantes_path %>
