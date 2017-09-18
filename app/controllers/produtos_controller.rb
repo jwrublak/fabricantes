@@ -1,6 +1,10 @@
+require 'net/http'
+require 'json'
+
 class ProdutosController < ApplicationController
   before_action :set_produto, only: [:show, :edit, :update, :destroy]
   before_action :load_fabricante, only: [:index, :show, :new, :create]
+  before_action :load_produtos_list, only: [:new]
 
   # GET /produtos
   # GET /produtos.json
@@ -29,7 +33,7 @@ class ProdutosController < ApplicationController
 
     respond_to do |format|
       if @produto.save
-        format.html { redirect_to @produto, notice: 'Produto was successfully created.' }
+        format.html { redirect_to fabricante_produto_path(@fabricante, @produto), notice: 'Produto was successfully created.' }
         format.json { render :show, status: :created, location: @produto }
       else
         format.html { render :new }
@@ -43,7 +47,7 @@ class ProdutosController < ApplicationController
   def update
     respond_to do |format|
       if @produto.update(produto_params)
-        format.html { redirect_to @produto, notice: 'Produto was successfully updated.' }
+        format.html { redirect_to fabricante_produto_path(@fabricante, @produto), notice: 'Produto was successfully updated.' }
         format.json { render :show, status: :ok, location: @produto }
       else
         format.html { render :edit }
@@ -63,6 +67,21 @@ class ProdutosController < ApplicationController
   end
 
   private
+    def load_produtos_list
+      @produtos_from_service = []
+
+      url = URI.parse('http://produtos.g.schiar.vms.ufsc.br:3000/produtos.json')
+      req = Net::HTTP::Get.new(url.to_s)
+      res = Net::HTTP.start(url.host, url.port) {|http|
+        http.request(req)
+      }
+
+      JSON.parse(res.body).each do |produto_s|
+        @produtos_from_service.push Produto.new({nome: produto_s['nome'], codigo: produto_s['codigo']})
+      end
+
+    end
+
     def load_fabricante
       @fabricante = Fabricante.find(params[:fabricante_id])
     end
