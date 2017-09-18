@@ -2,9 +2,10 @@ require 'net/http'
 require 'json'
 
 class ProdutosController < ApplicationController
+  before_action :load_produtos_list, only: [:show, :edit, :new, :update, :destroy]
   before_action :set_produto, only: [:show, :edit, :update, :destroy]
-  before_action :load_fabricante, only: [:index, :show, :new, :create]
-  before_action :load_produtos_list, only: [:new]
+  before_action :load_fabricante, only: [:index, :show, :new, :create, :destroy]
+  
 
   # GET /produtos
   # GET /produtos.json
@@ -61,7 +62,7 @@ class ProdutosController < ApplicationController
   def destroy
     @produto.destroy
     respond_to do |format|
-      format.html { redirect_to produtos_url, notice: 'Produto was successfully destroyed.' }
+      format.html { redirect_to fabricante_produtos_path(@fabricante), notice: 'Produto was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -77,7 +78,7 @@ class ProdutosController < ApplicationController
       }
 
       JSON.parse(res.body).each do |produto_s|
-        @produtos_from_service.push Produto.new({nome: produto_s['nome'], codigo: produto_s['codigo']})
+        @produtos_from_service.push Produto.new({id:produto_s['id'], nome: produto_s['nome'], codigo: produto_s['codigo']})
       end
 
     end
@@ -89,6 +90,10 @@ class ProdutosController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_produto
       @produto = Produto.find(params[:id])
+    end
+
+    def set_produto_from_service
+      @produto = @produtos_from_service.detect {|item| params[:id].to_i == item.id}
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

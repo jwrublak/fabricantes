@@ -3,22 +3,21 @@
 <table>
   <thead>
     <tr>
-      <th colspan="1"></th>
       <th>Nome</th>
       <th>Codigo</th>
+      <th colspan="1"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @produtos_from_service.each do |produto| %>
       <tr>
-      	<td><label><input type="radio" onchange="select(event)" name="option"></td>
         <td><%= produto.nome %></td>
         <td><%= produto.codigo %></td>
+        <td><%= link_to "Selecionar", fabricante_produtos_path(@fabricante, produto: {nome: produto.nome, codigo: produto.codigo}), method: :post %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<button id='submit' type='button'>Enviar</button> <br>
 <%= link_to 'Back', fabricantes_path(@fabricante) %>
