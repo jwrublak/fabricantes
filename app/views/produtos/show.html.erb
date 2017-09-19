@@ -10,4 +10,10 @@
   <%= @produto.codigo %>
 </p>
 
+<p>
+  <strong>Preço:</strong>
+  <%= number_to_currency(@produto.price) %>
+</p>
+
+
 <%= link_to 'Back', fabricante_produtos_path %>

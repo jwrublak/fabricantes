@@ -2,10 +2,9 @@ require 'net/http'
 require 'json'
 
 class ProdutosController < ApplicationController
-  before_action :load_produtos_list, only: [:show, :edit, :new, :update, :destroy]
+  before_action :load_produtos_list, only: [:new]
   before_action :set_produto, only: [:show, :edit, :update, :destroy]
-  before_action :load_fabricante, only: [:index, :show, :new, :create, :destroy]
-  
+  before_action :load_fabricante
 
   # GET /produtos
   # GET /produtos.json
@@ -90,6 +89,9 @@ class ProdutosController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_produto
       @produto = Produto.find(params[:id])
+      puts '-' * 100
+      puts @produto.inspect
+      puts '-' * 100
     end
 
     def set_produto_from_service
@@ -98,6 +100,6 @@ class ProdutosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def produto_params
-      params.require(:produto).permit(:nome, :codigo, :fabricante_id)
+      params.require(:produto).permit(:nome, :codigo, :price, :fabricante_id)
     end
 end

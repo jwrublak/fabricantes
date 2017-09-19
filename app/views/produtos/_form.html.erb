@@ -1,4 +1,4 @@
-<%= form_for @produto, url: fabricante_produtos_path(@fabricante) do |form| %>
+<%= form_for @produto, url: fabricante_produto_path(@fabricante, @produto) do |form| %>
   <% if produto.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(produto.errors.count, "error") %> prohibited this produto from being saved:</h2>
@@ -13,12 +13,17 @@
 
   <div class="field">
     <%= form.label :nome %>
-    <%= form.text_field :nome, id: :produto_nome %>
+    <%= form.text_field :nome, id: :produto_nome, :disabled => true %>
   </div>
 
   <div class="field">
     <%= form.label :codigo %>
-    <%= form.number_field :codigo, id: :produto_codigo %>
+    <%= form.number_field :codigo, id: :produto_codigo, :disabled => true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :price %>
+    <%= form.number_field :price, id: :produto_price %>
   </div>
 
   <div class="actions">
