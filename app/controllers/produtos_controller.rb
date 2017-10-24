@@ -77,12 +77,13 @@ class ProdutosController < ApplicationController
 
       url = URI.parse('http://produtos.g.schiar.vms.ufsc.br:3000/produtos.json')
       req = Net::HTTP::Get.new(url.to_s)
+      req.basic_auth 'giovani@schiar.com', 'lalala'
       res = Net::HTTP.start(url.host, url.port) {|http|
         http.request(req)
       }
 
       JSON.parse(res.body).each do |produto_s|
-        @produtos_from_service.push Produto.new({id:produto_s['id'], nome: produto_s['nome'], codigo: produto_s['codigo']})
+        @produtos_from_service.push Produto.new({id:produto_s['id'], nome: produto_s['name'], codigo: produto_s['code']})
       end
 
     end
