@@ -75,7 +75,7 @@ class ProdutosController < ApplicationController
     def load_produtos_list
       @produtos_from_service = []
 
-      url = URI.parse('http://produtos.g.schiar.vms.ufsc.br:3000/produtos.json')
+      url = URI.parse('http://produtos.g.schiar.vms.ufsc.br:3000/products.json')
       req = Net::HTTP::Get.new(url.to_s)
       req.basic_auth 'giovani@schiar.com', 'lalala'
       res = Net::HTTP.start(url.host, url.port) {|http|
