@@ -29,10 +29,12 @@ class ProdutosController < ApplicationController
   # POST /produtos
   # POST /produtos.json
   def create
+    old_produto = Produto.new
     @produto = @fabricante.produtos.build produto_params
 
     respond_to do |format|
       if @produto.save
+        store_changes old_produto, @produto
         format.html { redirect_to fabricante_produto_path(@fabricante, @produto), notice: 'Produto was successfully created.' }
         format.json { render :show, status: :created, location: @produto }
       else
@@ -45,8 +47,11 @@ class ProdutosController < ApplicationController
   # PATCH/PUT /produtos/1
   # PATCH/PUT /produtos/1.json
   def update
+    old_produto = Produto.new @produto.attributes
+
     respond_to do |format|
       if @produto.update(produto_params)
+        store_changes old_produto, @produto
         format.html { redirect_to fabricante_produto_path(@fabricante, @produto), notice: 'Produto was successfully updated.' }
         format.json { render :show, status: :ok, location: @produto }
       else

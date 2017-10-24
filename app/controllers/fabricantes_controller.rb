@@ -24,10 +24,12 @@ class FabricantesController < ApplicationController
   # POST /fabricantes
   # POST /fabricantes.json
   def create
+    old_fabricante = Fabricante.new
     @fabricante = Fabricante.new(fabricante_params)
 
     respond_to do |format|
       if @fabricante.save
+        store_changes(old_fabricante, @fabricante)
         format.html { redirect_to @fabricante, notice: 'Fabricante was successfully created.' }
         format.json { render :show, status: :created, location: @fabricante }
       else
@@ -40,8 +42,11 @@ class FabricantesController < ApplicationController
   # PATCH/PUT /fabricantes/1
   # PATCH/PUT /fabricantes/1.json
   def update
+    old_fabricante = Fabricante.new @fabricante.attributes
+    
     respond_to do |format|
       if @fabricante.update(fabricante_params)
+        store_changes(old_fabricante, @fabricante)
         format.html { redirect_to @fabricante, notice: 'Fabricante was successfully updated.' }
         format.json { render :show, status: :ok, location: @fabricante }
       else
