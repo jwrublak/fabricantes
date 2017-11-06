@@ -1,0 +1,21 @@
+<h1>Eventos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Classe</th>
+      <th>LOG</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @events.each do |event| %>
+      <tr>
+        <td><%= event.object_id %></td>
+        <td><%= event.class_name %></td>
+        <td><%= event.change %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
