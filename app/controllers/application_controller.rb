@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_action :authenticate_user!
   protect_from_forgery with: :exception
 
   # Store changes on event to create big data

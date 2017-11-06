@@ -32,6 +32,10 @@ gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem 'devise'
+gem 'omniauth-google-oauth2'
+gem 'figaro'
+gem 'devise-token_authenticatable'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

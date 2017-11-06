@@ -1,3 +1,8 @@
+<div>
+  Welcome <%= current_user.email %>!
+  <%= link_to 'logout', destroy_user_session_path, method: 'delete' %>
+</div>
+
 <p id="notice"><%= notice %></p>
 
 <h1>Fabricantes</h1>
