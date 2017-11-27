@@ -80,12 +80,15 @@ class ProdutosController < ApplicationController
       req.basic_auth 'giovani@schiar.com', 'lalala'
       res = Net::HTTP.start(url.host, url.port) {|http|
         http.request(req)
-      }
+      } rescue nil
 
-      JSON.parse(res.body).each do |produto_s|
-        @produtos_from_service.push Produto.new({id:produto_s['id'], nome: produto_s['name'], codigo: produto_s['code']})
+      if(res == nil)
+        @produtos_from_service = nil;
+      else
+        JSON.parse(res.body).each do |produto_s|
+          @produtos_from_service.push Produto.new({id:produto_s['id'], nome: produto_s['name'], codigo: produto_s['code']})
+        end
       end
-
     end
 
     def load_fabricante
